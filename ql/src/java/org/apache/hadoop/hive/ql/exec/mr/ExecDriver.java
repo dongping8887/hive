@@ -426,7 +426,7 @@ public class ExecDriver extends Task<MapredWork> implements Serializable, Hadoop
         TezSessionState session = ss.getTezSession();
         TezSessionPoolManager.getInstance().close(session, true);
       }
-
+      LOG.info("--------job: " + job);
       // Finally SUBMIT the JOB!
       rj = jc.submitJob(job);
       // replace it back
