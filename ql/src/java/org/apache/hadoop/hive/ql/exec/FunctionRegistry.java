@@ -258,6 +258,11 @@ public final class FunctionRegistry {
     system.registerUDF(serdeConstants.DOUBLE_TYPE_NAME, UDFToDouble.class, false, UDFToDouble.class.getSimpleName());
     system.registerUDF(serdeConstants.STRING_TYPE_NAME, UDFToString.class, false, UDFToString.class.getSimpleName());
 
+    //add by dongping 20181228 begin
+    system.registerUDF("f_monthdiff", UDFMonthDiff.class, false);
+    system.registerUDF("f_createmd5", UDFCreateMd5.class, false);
+    //add by dongping 20181228 end
+
     system.registerGenericUDF(serdeConstants.DATE_TYPE_NAME, GenericUDFToDate.class);
     system.registerGenericUDF(serdeConstants.TIMESTAMP_TYPE_NAME, GenericUDFTimestamp.class);
     system.registerGenericUDF(serdeConstants.INTERVAL_YEAR_MONTH_TYPE_NAME, GenericUDFToIntervalYearMonth.class);
