@@ -633,11 +633,14 @@ public class Table implements Serializable {
     try {
       // Do the lightweight check for general case.
       if (hasMetastoreBasedSchema(SessionState.getSessionConf(), serializationLib)) {
+        LOG.debug("hasMetastoreBasedSchema has return true.");
         return tTable.getSd().getCols();
       } else if (forMs && !shouldStoreFieldsInMetastore(
           SessionState.getSessionConf(), serializationLib, tTable.getParameters())) {
+        LOG.debug("forMs is true and shouldStoreFieldsInMetastore has return true.");
         return Hive.getFieldsFromDeserializerForMsStorage(this, getDeserializer());
       } else {
+        LOG.debug("will get use MetaStoreUtils.getFieldsFromDeserializer.");
         return MetaStoreUtils.getFieldsFromDeserializer(getTableName(), getDeserializer());
       }
     } catch (Exception e) {

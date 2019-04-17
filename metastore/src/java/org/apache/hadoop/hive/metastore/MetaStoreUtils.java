@@ -1391,7 +1391,9 @@ public class MetaStoreUtils {
    */
   public static List<FieldSchema> getFieldsFromDeserializer(String tableName,
       Deserializer deserializer) throws SerDeException, MetaException {
+    LOG.info("deserializer: " + deserializer);
     ObjectInspector oi = deserializer.getObjectInspector();
+    LOG.info("oi: " + oi);
     String[] names = tableName.split("\\.");
     String last_name = names[names.length - 1];
     for (int i = 1; i < names.length; i++) {
@@ -1426,9 +1428,11 @@ public class MetaStoreUtils {
     if (oi.getCategory() != Category.STRUCT) {
       str_fields.add(new FieldSchema(last_name, oi.getTypeName(),
           FROM_SERIALIZER));
+      LOG.debug("oi category: " + oi.getCategory());
     } else {
       List<? extends StructField> fields = ((StructObjectInspector) oi)
           .getAllStructFieldRefs();
+      LOG.debug("fields: " + fields);
       for (int i = 0; i < fields.size(); i++) {
         StructField structField = fields.get(i);
         String fieldName = structField.getFieldName();

@@ -39,6 +39,9 @@ public final class StructTypeInfo extends TypeInfo implements Serializable {
   private static final long serialVersionUID = 1L;
 
   private ArrayList<String> allStructFieldNames;
+  //add by dongping 20190417 begin
+  private ArrayList<String> allStructFieldComments;
+  //add by dongping 20190417 end
   private ArrayList<TypeInfo> allStructFieldTypeInfos;
 
   /**
@@ -70,6 +73,12 @@ public final class StructTypeInfo extends TypeInfo implements Serializable {
     this.allStructFieldNames = allStructFieldNames;
   }
 
+  //add by dongping 20190417 begin
+  public void setAllStructFieldComments(ArrayList<String> allStructFieldComments) {
+    this.allStructFieldComments = allStructFieldComments;
+  }
+  //add by dongping 20190417 end
+
   /**
    * For java serialization use only.
    */
@@ -94,6 +103,12 @@ public final class StructTypeInfo extends TypeInfo implements Serializable {
   public ArrayList<String> getAllStructFieldNames() {
     return allStructFieldNames;
   }
+
+  //add by dongping 20190417 begin
+  public ArrayList<String> getAllStructFieldComments() {
+    return allStructFieldComments;
+  }
+  //add by dongping 20190417 end
 
   public ArrayList<TypeInfo> getAllStructFieldTypeInfos() {
     return allStructFieldTypeInfos;
@@ -144,4 +159,14 @@ public final class StructTypeInfo extends TypeInfo implements Serializable {
     return allStructFieldNames.hashCode() ^ allStructFieldTypeInfos.hashCode();
   }
 
+  //add by dongping 20190417 begin
+  @Override
+  public String toString() {
+    return "StructTypeInfo{" +
+            "allStructFieldNames=" + allStructFieldNames +
+            ", allStructFieldComments=" + allStructFieldComments +
+            ", allStructFieldTypeInfos=" + allStructFieldTypeInfos +
+            '}';
+  }
+  //add by dongping 20190417 end
 }

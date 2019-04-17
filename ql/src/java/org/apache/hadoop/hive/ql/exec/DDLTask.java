@@ -2259,6 +2259,7 @@ public class DDLTask extends Task<DDLWork> implements Serializable {
       // Columns
       String tbl_columns = "";
       List<FieldSchema> cols = tbl.getCols();
+      LOG.debug("cols: " + cols);
       List<String> columns = new ArrayList<String>();
       for (FieldSchema col : cols) {
         String columnDesc = "  `" + col.getName() + "` " + col.getType();
@@ -3315,9 +3316,11 @@ public class DDLTask extends Task<DDLWork> implements Serializable {
       if (colPath.equals(tableName)) {
         cols = (part == null || tbl.getTableType() == TableType.VIRTUAL_VIEW) ?
             tbl.getCols() : part.getCols();
+        LOG.debug("cols: " + cols);
 
         if (!descTbl.isFormatted()) {
           cols.addAll(tbl.getPartCols());
+          LOG.debug("cols: " + cols);
         }
 
         if (tbl.isPartitioned() && part == null) {

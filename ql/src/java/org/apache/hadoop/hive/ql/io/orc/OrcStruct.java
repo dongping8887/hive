@@ -35,6 +35,7 @@ import org.apache.hadoop.hive.serde2.typeinfo.TypeInfoFactory;
 import org.apache.hadoop.hive.serde2.typeinfo.UnionTypeInfo;
 import org.apache.hadoop.io.Writable;
 import org.apache.orc.OrcProto;
+import scala.annotation.meta.field;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -149,12 +150,22 @@ final public class OrcStruct implements Writable {
     private final String name;
     private final ObjectInspector inspector;
     private final int offset;
+    //add by dongping 20190417 begin
+    private final String fieldComment;
+    //add by dongping 20190417 end
 
+    //modify by dongping 20190417 begin
     Field(String name, ObjectInspector inspector, int offset) {
+      this(name, inspector, offset, null);
+    }
+
+    Field(String name, ObjectInspector inspector, int offset, String fieldComment) {
       this.name = name;
       this.inspector = inspector;
       this.offset = offset;
+      this.fieldComment = fieldComment;
     }
+    //modify by dongping 20190417 end
 
     @Override
     public String getFieldName() {
@@ -171,10 +182,22 @@ final public class OrcStruct implements Writable {
       return offset;
     }
 
+    //add by dongping 20190417 begin
     @Override
     public String getFieldComment() {
-      return null;
+      return fieldComment;
     }
+
+    @Override
+    public String toString() {
+      return "OrcStruct$Field{" +
+              "name='" + name + '\'' +
+              ", inspector=" + inspector +
+              ", offset=" + offset +
+              ", fieldComment='" + fieldComment + '\'' +
+              '}';
+    }
+    //add by dongping 20190417 end
   }
 
   static class OrcStructInspector extends SettableStructObjectInspector {
@@ -191,10 +214,15 @@ final public class OrcStruct implements Writable {
     OrcStructInspector(StructTypeInfo info) {
       ArrayList<String> fieldNames = info.getAllStructFieldNames();
       ArrayList<TypeInfo> fieldTypes = info.getAllStructFieldTypeInfos();
+      //add by dongping 20190417 begin
+      ArrayList<String> fieldComments = info.getAllStructFieldComments();
+      //add by dongping 20190417 end
       fields = new ArrayList<StructField>(fieldNames.size());
       for(int i=0; i < fieldNames.size(); ++i) {
+        //modify by dongping 20190417 begin
         fields.add(new Field(fieldNames.get(i),
-          createObjectInspector(fieldTypes.get(i)), i));
+          createObjectInspector(fieldTypes.get(i)), i, fieldComments.get(i)));
+        //modify by dongping 20190417 begin
       }
     }
 

@@ -21,6 +21,8 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.orc.OrcConf;
@@ -110,10 +112,24 @@ public class OrcSerde extends VectorizedSerde {
 
     ArrayList<TypeInfo> fieldTypes =
         TypeInfoUtils.getTypeInfosFromTypeString(columnTypeProperty);
+
+     //add by dongping 20190417 begin
+      ArrayList<String> columnComments = new ArrayList<String>();
+     String columnCommentProperty = table.getProperty("columns.comments");
+     if (columnCommentProperty != null){
+         if (columnCommentProperty.length() != 0) {
+             columnComments.addAll(Arrays.asList(columnCommentProperty.split("\0", columnNames.size())));
+         }
+     }
+     //add by dongping 20190417 end
+
     StructTypeInfo rootType = new StructTypeInfo();
     // The source column names for ORC serde that will be used in the schema.
     rootType.setAllStructFieldNames(columnNames);
     rootType.setAllStructFieldTypeInfos(fieldTypes);
+    //add by dongping 20190417 begin
+    rootType.setAllStructFieldComments(columnComments);
+    //add by dongping 20190417 end
     inspector = OrcStruct.createObjectInspector(rootType);
   }
 
